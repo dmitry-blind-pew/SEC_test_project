@@ -12,4 +12,4 @@ class CompaniesService(BaseService):
         return await self.db.companies.get_one(id=company_id)
 
     async def get_by_name(self, *, name: str):
-        return await self.db.companies.get_one(neme=name)
+        return await self.db.companies.get_one(name=name)

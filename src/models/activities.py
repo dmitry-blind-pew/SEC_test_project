@@ -4,6 +4,7 @@ from sqlalchemy import CheckConstraint, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models.base import BaseORM
+from src.models.companies_activities import CompaniesActivitiesORM
 
 
 class ActivitiesORM(BaseORM):
@@ -27,6 +28,6 @@ class ActivitiesORM(BaseORM):
     )
     children: Mapped[List["ActivitiesORM"]] = relationship(back_populates="parent")
     companies: Mapped[List["CompaniesORM"]] = relationship(
-        secondary="companies_activities",
+        secondary=CompaniesActivitiesORM.__table__,
         back_populates="activities",
     )

@@ -34,6 +34,18 @@ target_metadata = BaseORM.metadata
 # ... etc.
 
 
+def include_object(object_, name, type_, reflected, compare_to):
+    postgis_system_tables = {"spatial_ref_sys", "topology", "layer"}
+    if type_ == "table" and name in postgis_system_tables:
+        return False
+
+    schema = getattr(object_, "schema", None)
+    if schema == "topology":
+        return False
+
+    return True
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -52,6 +64,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        include_object=include_object,
     )
 
     with context.begin_transaction():
@@ -73,7 +86,9 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
+            include_object=include_object,
         )
 
         with context.begin_transaction():
