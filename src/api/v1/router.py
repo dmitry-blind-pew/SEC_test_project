@@ -8,6 +8,6 @@ api_v1_router = APIRouter(
     dependencies=[Depends(verify_api_key)],
 )
 
-api_v1_router.include_router(companies.router, prefix="/company", tags=["Поиск по компаниям"])
-api_v1_router.include_router(buildings.router, prefix="/building", tags=["Поиск по зданиям"])
-api_v1_router.include_router(activities.router, prefix="/activity", tags=["Поиск по деятельности"])
+api_v1_router.include_router(companies.router, prefix="/companies", tags=["Поиск по компаниям"])
+api_v1_router.include_router(buildings.router, prefix="/buildings", tags=["Поиск по зданиям"])
+api_v1_router.include_router(activities.router, prefix="/activities", tags=["Поиск по деятельности"])

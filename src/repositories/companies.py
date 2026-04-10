@@ -80,3 +80,8 @@ class CompaniesRepo(BaseRepo):
             .distinct()
         )
         return await self._fetch_companies(stmt=stmt)
+
+
+    async def get_by_name(self, *, name: str):
+        stmt = select(self.model).where(self.model.name.ilike(f"%{name}%")).distinct()
+        return await self._fetch_companies(stmt=stmt)
