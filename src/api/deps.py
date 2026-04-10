@@ -1,6 +1,7 @@
 from typing import Annotated
-from fastapi import Depends, Security
+from fastapi import Depends, Security, Query
 from fastapi.security import APIKeyHeader
+from pydantic import BaseModel
 
 from src.core.config import settings
 from src.core.db import async_session_maker
@@ -24,3 +25,11 @@ async def get_db():
 
 
 DBDep = Annotated[DBManager, Depends(get_db)]
+
+
+class PaginationParams(BaseModel):
+    page: Annotated[int, Query(1, ge=1, description="Страница")]
+    per_page: Annotated[int, Query(20, ge=1, le=100, description="Количество элементов на странице")]
+
+
+PagDep = Annotated[PaginationParams, Depends()]

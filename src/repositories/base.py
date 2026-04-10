@@ -20,8 +20,8 @@ class BaseRepo:
             raise ObjectNotFoundException() from exc
         return self.mapper.map_to_domain_entity(model_orm)
 
-    async def get_filtered(self, **filter_by):
-        query = select(self.model).filter_by(**filter_by)
+    async def get_filtered(self, limit: int, offset: int, **filter_by):
+        query = select(self.model).filter_by(**filter_by).order_by(self.model.id).limit(limit).offset(offset)
         result = await self.session.execute(query)
         model_orm = result.scalars().all()
         return [self.mapper.map_to_domain_entity(model) for model in model_orm]
