@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Query
+from fastapi_cache.decorator import cache
 
 from src.api.deps import DBDep, PagDep
 from src.services.companies import CompaniesService
@@ -8,6 +9,7 @@ router = APIRouter()
 
 
 @router.get("/search/by-radius", summary="Получить компании в радиусе")
+@cache(expire=45)
 async def get_in_radius(
     *,
     pagination: PagDep,
@@ -20,6 +22,7 @@ async def get_in_radius(
 
 
 @router.get("/search/by-rectangle", summary="Получить компании в области")
+@cache(expire=45)
 async def get_in_rectangle(
     *,
     pagination: PagDep,
@@ -44,5 +47,6 @@ async def get_by_id(*, company_id: int, db: DBDep):
 
 
 @router.get("", summary="Получить компании по названию")
+@cache(expire=90)
 async def get_by_name(*, pagination: PagDep, name: str, db: DBDep):
     return await CompaniesService(db).get_by_name(name=name, pagination=pagination)
