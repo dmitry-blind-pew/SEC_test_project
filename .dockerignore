@@ -1,5 +1,6 @@
 .git
-.gitignore
+.env
+.env.*
 .venv
 venv
 __pycache__/
@@ -8,10 +9,7 @@ __pycache__/
 *.pyd
 *.log
 .pytest_cache/
-.ruff_cache/
 .mypy_cache/
+.ruff_cache/
 .idea/
 .vscode/
-tests/
-agent-transcripts/
-terminals/

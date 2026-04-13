@@ -1,67 +1,25 @@
-### PyCharm ###
 .idea/
-*.iws
-*.iml
-*.ipr
-out/
+.vscode/
 
-### Python ###
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-.venv/
-ENV/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
 
-### Env ###
+.venv/
+venv/
+env/
+
 .env
 .env.*
 !.env.example
 
-### DB & Logs ###
-*.sql
-*.dump
-*.log
-pgdata/
-postgres_data/
-*.sqlite3
-
-### Testing & Analysis ###
 .pytest_cache/
-.coverage
-htmlcov/
 .mypy_cache/
 .ruff_cache/
-.pyright_cache/
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
+.coverage
+htmlcov/
 
-### Docker ###
-.docker/
-docker-compose.override.yml
+*.log
 
-### System Files ###
-.DS_Store
-Thumbs.db
+build/
+dist/
+*.egg-info/

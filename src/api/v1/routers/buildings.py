@@ -9,7 +9,11 @@ from src.services.buildings import BuildingsService
 router = APIRouter()
 
 
-@router.get("/{building_id}/companies", summary="Получить компании по адресу")
+@router.get(
+    "/{building_id}/companies",
+    summary="Получить компании по зданию",
+    description="Возвращает список организаций, находящихся в указанном здании"
+)
 @cache(expire=180)
-async def get_by_address(*, pagination: PagDep, building_id: int, db: DBDep) -> list[CompaniesOutDTO]:
+async def get_by_building_id(*, pagination: PagDep, building_id: int, db: DBDep) -> list[CompaniesOutDTO]:
     return await BuildingsService(db).get_by_building_id(building_id=building_id, pagination=pagination)
