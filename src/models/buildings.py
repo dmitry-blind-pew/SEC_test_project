@@ -1,3 +1,4 @@
+import typing
 from typing import List
 
 from geoalchemy2 import Geography
@@ -5,6 +6,9 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models.base import BaseORM
+
+if typing.TYPE_CHECKING:
+    from src.models import CompaniesORM
 
 
 class BuildingsORM(BaseORM):

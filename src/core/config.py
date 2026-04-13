@@ -3,7 +3,7 @@ from typing import Literal
 
 
 class Settings(BaseSettings):
-    MODE: Literal["DEV", "PROD"]
+    MODE: Literal["DEV", "PROD", "TEST"]
 
     DB_HOST: str
     DB_PORT: int

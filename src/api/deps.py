@@ -11,6 +11,7 @@ from src.utils.db_manager import DBManager
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
+
 def verify_api_key(api_key: str | None = Security(api_key_header)):
     if api_key != settings.API_KEY:
         raise ApiKeyInvalidException()

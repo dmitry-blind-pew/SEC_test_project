@@ -1,7 +1,12 @@
+import typing
+
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models.base import BaseORM
+
+if typing.TYPE_CHECKING:
+    from src.models import CompaniesORM
 
 
 class CompanyPhonesORM(BaseORM):

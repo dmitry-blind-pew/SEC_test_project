@@ -41,5 +41,7 @@ def upgrade() -> None:
             name=op.f("pk_companies_activities"),
         ),
     )
+
+
 def downgrade() -> None:
     op.drop_table("companies_activities")

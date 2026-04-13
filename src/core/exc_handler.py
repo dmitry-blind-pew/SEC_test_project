@@ -1,7 +1,8 @@
+# ruff: noqa: F405
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from src.core.domain_exc import *
+from src.core.domain_exc import *  # noqa F403
 
 
 EXCEPTION_STATUS_MAP: dict[type[SecTestException], int] = {

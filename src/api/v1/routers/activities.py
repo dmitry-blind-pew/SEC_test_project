@@ -12,6 +12,7 @@ router = APIRouter()
 async def get_by_activity(*, pagination: PagDep, activity_id: int, db: DBDep):
     return await ActivitiesService(db).get_by_activity(activity_id=activity_id, pagination=pagination)
 
+
 @router.get("/{activity_id}/companies/tree", summary="Получить компании относящиеся к виду деятельности")
 @cache(expire=180)
 async def get_in_activity(*, pagination: PagDep, activity_id: int, db: DBDep):

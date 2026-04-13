@@ -9,7 +9,7 @@ from alembic import context
 
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
-from src.models import *  # noqa: E402
+from src.models import *  # noqa F403
 from src.core.config import settings
 
 # this is the Alembic Config object, which provides
@@ -26,7 +26,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = BaseORM.metadata
+target_metadata = BaseORM.metadata  # noqa F405
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

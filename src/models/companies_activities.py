@@ -9,4 +9,3 @@ class CompaniesActivitiesORM(BaseORM):
 
     company_id: Mapped[int] = mapped_column(ForeignKey("companies.id", ondelete="CASCADE"), primary_key=True)
     activity_id: Mapped[int] = mapped_column(ForeignKey("activities.id", ondelete="CASCADE"), primary_key=True)
-

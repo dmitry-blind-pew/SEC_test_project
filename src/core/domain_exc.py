@@ -1,5 +1,3 @@
-
-
 class SecTestException(Exception):
     detail = "Неожиданная ошибка"
 

@@ -16,7 +16,7 @@ async def get_in_radius(
     lon: float = Query(ge=-180, le=180),
     lat: float = Query(ge=-90, le=90),
     radius_m: float = Query(gt=0),
-    db: DBDep
+    db: DBDep,
 ):
     return await CompaniesService(db).get_in_radius(pagination=pagination, lon=lon, lat=lat, radius_m=radius_m)
 
@@ -30,7 +30,7 @@ async def get_in_rectangle(
     min_lat: float = Query(ge=-90, le=90),
     max_lon: float = Query(ge=-180, le=180),
     max_lat: float = Query(ge=-90, le=90),
-    db: DBDep
+    db: DBDep,
 ):
     return await CompaniesService(db).get_in_rectangle(
         pagination=pagination,

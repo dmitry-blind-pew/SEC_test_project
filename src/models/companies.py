@@ -1,3 +1,4 @@
+import typing
 from typing import List
 
 from sqlalchemy import ForeignKey, String
@@ -5,6 +6,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models.base import BaseORM
 from src.models.companies_activities import CompaniesActivitiesORM
+
+if typing.TYPE_CHECKING:
+    from src.models import BuildingsORM, CompanyPhonesORM, ActivitiesORM
 
 
 class CompaniesORM(BaseORM):

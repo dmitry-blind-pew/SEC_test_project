@@ -2,6 +2,7 @@ import asyncio
 
 from geoalchemy2.elements import WKTElement
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from src.core.db import async_session_maker
 from src.models.activities import ActivitiesORM
@@ -10,8 +11,11 @@ from src.models.companies import CompaniesORM
 from src.models.company_phones import CompanyPhonesORM
 
 
-async def seed_data() -> None:
-    async with async_session_maker() as session:
+async def seed_data(
+    session_factory: async_sessionmaker[AsyncSession] | None = None,
+) -> None:
+    factory: async_sessionmaker[AsyncSession] = session_factory or async_session_maker
+    async with factory() as session:
         await session.execute(
             text(
                 "TRUNCATE TABLE company_phones, companies_activities, companies, activities, buildings RESTART IDENTITY CASCADE"

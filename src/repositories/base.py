@@ -25,5 +25,3 @@ class BaseRepo:
         result = await self.session.execute(query)
         model_orm = result.scalars().all()
         return [self.mapper.map_to_domain_entity(model) for model in model_orm]
-
-
