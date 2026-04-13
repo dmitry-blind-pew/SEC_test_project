@@ -1,5 +1,6 @@
+import logging
 from typing import Annotated
-from fastapi import Depends, Security, Query
+from fastapi import Depends, Security, Query, Request
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 
@@ -11,9 +12,16 @@ from src.utils.db_manager import DBManager
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
+logger = logging.getLogger(__name__)
 
-def verify_api_key(api_key: str | None = Security(api_key_header)):
+def verify_api_key(request: Request, api_key: str | None = Security(api_key_header)):
     if api_key != settings.API_KEY:
+        logger.warning(
+            "Отклонен запрос с неверным API-ключом: method=%s path=%s client_ip=%s",
+            request.method,
+            request.url.path,
+            request.client.host if request.client else "unknown",
+        )
         raise ApiKeyInvalidException()
 
 
