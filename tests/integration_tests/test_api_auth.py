@@ -15,5 +15,6 @@ async def test_forbidden_for_invalid_or_missing_api_key(
     path: str,
     params: dict,
 ):
+    """Проверяет, что с неверным или отсутствующим API-ключом доступ запрещен."""
     r = await client_fixture.get(path, params=params)
     assert r.status_code == 403

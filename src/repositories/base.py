@@ -12,6 +12,7 @@ class BaseRepo:
         self.session = session
 
     async def get_one(self, **filter_by):
+        """Возвращает один объект по фильтрам или поднимает ObjectNotFoundException."""
         query = select(self.model).filter_by(**filter_by)
         result = await self.session.execute(query)
         try:
@@ -21,6 +22,7 @@ class BaseRepo:
         return self.mapper.map_to_domain_entity(model_orm)
 
     async def get_filtered(self, limit: int, offset: int, **filter_by):
+        """Возвращает список объектов по заданным фильтрам."""
         query = select(self.model).filter_by(**filter_by).order_by(self.model.id).limit(limit).offset(offset)
         result = await self.session.execute(query)
         model_orm = result.scalars().all()

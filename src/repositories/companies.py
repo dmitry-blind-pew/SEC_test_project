@@ -13,11 +13,13 @@ class CompaniesRepo(BaseRepo):
     mapper = CompaniesMapper
 
     async def _fetch_companies(self, *, stmt):
+        """Выполняет запрос в БД и мапит ORM в DTO."""
         result = await self.session.execute(stmt)
         model_orm = result.scalars().all()
         return [self.mapper.map_to_domain_entity(model) for model in model_orm]
 
     async def _get_by_activity_ids_query(self, *, activity_ids_query, limit: int, offset: int):
+        """Возвращает компании, связанные с любым id деятельности из подзапроса."""
         stmt = (
             select(self.model)
             .distinct()
@@ -36,16 +38,22 @@ class CompaniesRepo(BaseRepo):
         return await self._fetch_companies(stmt=stmt)
 
     async def get_by_activity(self, *, activity_id: int, limit: int, offset: int):
+        """Возвращает компании, напрямую связанные с указанной деятельностью."""
         activity_ids_query = select(ActivitiesORM.id).where(ActivitiesORM.id == activity_id)
         return await self._get_by_activity_ids_query(activity_ids_query=activity_ids_query, limit=limit, offset=offset)
 
     async def get_in_activity(self, *, activity_id: int, limit: int, offset: int):
+        """
+        Формирует рекурсивный CTE, начиная с переданного "activity_id". На каждой итерации рекурсии добавляет дочерние
+        узлы по связи "ActivitiesORM.parent_id". Собирает итоговый набор "activity_id" из CTE.
+        """
         cte = select(ActivitiesORM.id).where(ActivitiesORM.id == activity_id).cte(recursive=True)
         cte = cte.union_all(select(ActivitiesORM.id).where(ActivitiesORM.parent_id == cte.c.id))
         activity_ids_query = select(cte.c.id)
         return await self._get_by_activity_ids_query(activity_ids_query=activity_ids_query, limit=limit, offset=offset)
 
     async def get_in_radius(self, *, lon: float, lat: float, radius_m: float, limit: int, offset: int):
+        """Возвращает компании в радиусе (в метрах) от географической точки."""
         point = WKTElement(f"POINT({lon} {lat})", srid=4326)
         stmt = (
             select(self.model)
@@ -61,6 +69,7 @@ class CompaniesRepo(BaseRepo):
     async def get_in_rectangle(
         self, *, min_lon: float, min_lat: float, max_lon: float, max_lat: float, limit: int, offset: int
     ):
+        """Возвращает компании в пределах прямоугольной области по долготе и широте."""
         geom = func.cast(BuildingsORM.location, Geometry(geometry_type="POINT", srid=4326))
         lon_expr = func.ST_X(geom)
         lat_expr = func.ST_Y(geom)
@@ -79,6 +88,7 @@ class CompaniesRepo(BaseRepo):
         return await self._fetch_companies(stmt=stmt)
 
     async def get_by_name(self, *, name: str, limit: int, offset: int):
+        """Возвращает компании по частичному регистронезависимому совпадению имени."""
         stmt = (
             select(self.model)
             .where(self.model.name.ilike(f"%{name}%"))

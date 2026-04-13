@@ -21,6 +21,7 @@ class TestModelORM(Base):
 class TestMapper:
     @staticmethod
     def map_to_domain_entity(model: TestModelORM):
+        """Мапит тестовую модель в простой словарь."""
         return {"id": model.id, "name": model.name}
 
 
@@ -34,24 +35,29 @@ class ScalarResultOne:
         self._value = value
 
     def one(self):
+        """Возвращает сохраненный объект, имитируя scalar result."""
         return self._value
 
 
 class ScalarResultNoRows:
     def one(self):
+        """Имитирует отсутствие строк, как one() в SQLA."""
         raise NoResultFound()
 
 
 class ExecuteResult:
     def __init__(self, scalar_result):
+        """Сохраняет объект, который будет возвращен из scalars()."""
         self._scalar_result = scalar_result
 
     def scalars(self):
+        """Возвращает имитацию ScalarResult."""
         return self._scalar_result
 
 
 @pytest.mark.asyncio
 async def test_get_one_returns_mapped_entity():
+    """Проверяет, что BaseRepo.get_one возвращает замапленный объект."""
     model = TestModelORM(id=1, name="ACME Corp")
     execute_result = ExecuteResult(ScalarResultOne(model))
     session = type("SessionMock", (), {"execute": AsyncMock(return_value=execute_result)})()
@@ -65,6 +71,7 @@ async def test_get_one_returns_mapped_entity():
 
 @pytest.mark.asyncio
 async def test_get_one_raises_object_not_found():
+    """Проверяет, что BaseRepo.get_one кидает ObjectNotFoundException при пустом результате."""
     execute_result = ExecuteResult(ScalarResultNoRows())
     session = type("SessionMock", (), {"execute": AsyncMock(return_value=execute_result)})()
     repo = TestRepo(session=session)

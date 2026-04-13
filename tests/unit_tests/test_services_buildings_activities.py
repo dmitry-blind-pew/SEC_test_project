@@ -6,6 +6,7 @@ from src.services.buildings import BuildingsService
 
 @pytest.mark.asyncio
 async def test_buildings_service_get_by_building_id_calls_repo(db_with_companies_repo, pagination_input):
+    """Проверяет вызов get_filtered с id здания."""
     service = BuildingsService(db=db_with_companies_repo)
 
     await service.get_by_building_id(pagination=pagination_input, building_id=7)
@@ -19,6 +20,7 @@ async def test_buildings_service_get_by_building_id_calls_repo(db_with_companies
 
 @pytest.mark.asyncio
 async def test_activities_service_get_by_activity_calls_repo(db_with_companies_repo, pagination_input):
+    """Проверяет вызов get_by_activity с id деятельности."""
     service = ActivitiesService(db=db_with_companies_repo)
 
     await service.get_by_activity(pagination=pagination_input, activity_id=11)
@@ -32,6 +34,7 @@ async def test_activities_service_get_by_activity_calls_repo(db_with_companies_r
 
 @pytest.mark.asyncio
 async def test_activities_service_get_in_activity_calls_repo(db_with_companies_repo, pagination_input):
+    """Проверяет вызов get_in_activity с id деятельности."""
     service = ActivitiesService(db=db_with_companies_repo)
 
     await service.get_in_activity(pagination=pagination_input, activity_id=11)

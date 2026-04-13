@@ -2,11 +2,13 @@ from httpx import AsyncClient
 
 
 async def test_company_not_found(api_client: AsyncClient):
+    """Проверяет, что запрос несуществующей компании возвращает 404 ошибку."""
     r = await api_client.get("/api/v1/companies/999999")
     assert r.status_code == 404
 
 
 async def test_rectangle_invalid_bounds(api_client: AsyncClient):
+    """Проверяет, что некорректные границы области возвращают 422 ошибку."""
     r = await api_client.get(
         "/api/v1/companies/search/by-rectangle",
         params={

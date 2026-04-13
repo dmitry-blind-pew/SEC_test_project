@@ -10,6 +10,7 @@ from httpx import AsyncClient
     ],
 )
 async def test_radius_query_validation_422(api_client: AsyncClient, params: dict):
+    """Проверяет валидацию радиуса: значения <= 0 должны возвращать 422 ошибку."""
     r = await api_client.get("/api/v1/companies/search/by-radius", params=params)
     assert r.status_code == 422
 
@@ -22,5 +23,6 @@ async def test_radius_query_validation_422(api_client: AsyncClient, params: dict
     ],
 )
 async def test_radius_lon_lat_validation_422(api_client: AsyncClient, params: dict):
+    """Проверяет валидацию долготы и широты вне допустимых границ для поиска в радиусе."""
     r = await api_client.get("/api/v1/companies/search/by-radius", params=params)
     assert r.status_code == 422

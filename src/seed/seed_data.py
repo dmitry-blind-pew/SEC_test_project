@@ -14,6 +14,12 @@ from src.models.company_phones import CompanyPhonesORM
 async def seed_data(
     session_factory: async_sessionmaker[AsyncSession] | None = None,
 ) -> None:
+    """
+    Очищает таблицы и заполняет БД тестовыми данными.
+    Выполняет TRUNCATE с RESTART IDENTITY для бизнес-таблиц, затем создает
+    базовый набор зданий, типов деятельности, компаний, телефонов
+    и связей компаний с видами деятельности.
+    """
     factory: async_sessionmaker[AsyncSession] = session_factory or async_session_maker
     async with factory() as session:
         await session.execute(

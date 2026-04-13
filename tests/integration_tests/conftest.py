@@ -9,6 +9,10 @@ from src.seed.seed_data import seed_data
 
 @pytest.fixture(scope="session", autouse=True)
 async def setup_database():
+    """
+    Выполняет "CREATE EXTENSION IF NOT EXISTS postgis", чтобы тип "geography" и гео-функции были доступны в тестовой БД.
+    Удаляет все таблицы, создает их заново и наполняет данными использую ф-цию seed_data.
+    """
     async with engine_null_pool.begin() as conn:
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS postgis"))
         await conn.run_sync(BaseORM.metadata.drop_all)
