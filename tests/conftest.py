@@ -14,13 +14,13 @@ from src.main import app
 
 
 @pytest.fixture(scope="session", autouse=True)
-async def check_test_mode():
+async def check_test_mode() -> AsyncGenerator[None, None]:
     """Проверяет, активность TEST мода."""
     assert settings.MODE == "TEST"
     yield
 
 
-async def get_db_manager_null_pool():
+async def get_db_manager_null_pool() -> AsyncGenerator[DBManager, None]:
     """Возвращает DBManager на базе NullPool, ограничивая пул соединений до одного"""
     async with DBManager(session_factory=async_session_maker_null_pool) as db:
         yield db
@@ -77,7 +77,7 @@ async def api_client_no_key() -> AsyncGenerator[AsyncClient, None]:
 
 
 @pytest.fixture
-async def client_fixture(request) -> AsyncGenerator[AsyncClient, None]:
+async def client_fixture(request: pytest.FixtureRequest) -> AsyncGenerator[AsyncClient, None]:
     """В тесте передает строковое имя нужной фикстуры."""
     client = request.getfixturevalue(request.param)
     yield client

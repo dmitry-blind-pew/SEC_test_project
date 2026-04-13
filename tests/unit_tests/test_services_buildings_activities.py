@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 
 from src.services.activities import ActivitiesService
@@ -5,7 +7,9 @@ from src.services.buildings import BuildingsService
 
 
 @pytest.mark.asyncio
-async def test_buildings_service_get_by_building_id_calls_repo(db_with_companies_repo, pagination_input):
+async def test_buildings_service_get_by_building_id_calls_repo(
+    db_with_companies_repo: Any, pagination_input: Any
+) -> None:
     """Проверяет вызов get_filtered с id здания."""
     service = BuildingsService(db=db_with_companies_repo)
 
@@ -19,7 +23,9 @@ async def test_buildings_service_get_by_building_id_calls_repo(db_with_companies
 
 
 @pytest.mark.asyncio
-async def test_activities_service_get_by_activity_calls_repo(db_with_companies_repo, pagination_input):
+async def test_activities_service_get_by_activity_calls_repo(
+    db_with_companies_repo: Any, pagination_input: Any
+) -> None:
     """Проверяет вызов get_by_activity с id деятельности."""
     service = ActivitiesService(db=db_with_companies_repo)
 
@@ -33,7 +39,9 @@ async def test_activities_service_get_by_activity_calls_repo(db_with_companies_r
 
 
 @pytest.mark.asyncio
-async def test_activities_service_get_in_activity_calls_repo(db_with_companies_repo, pagination_input):
+async def test_activities_service_get_in_activity_calls_repo(
+    db_with_companies_repo: Any, pagination_input: Any
+) -> None:
     """Проверяет вызов get_in_activity с id деятельности."""
     service = ActivitiesService(db=db_with_companies_repo)
 

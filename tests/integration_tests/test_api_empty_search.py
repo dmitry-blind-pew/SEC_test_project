@@ -25,7 +25,7 @@ async def test_empty_search_returns_empty_list(
     params: dict,
     expected_status: int,
     expected_body: list,
-):
+) -> None:
     """Проверяет, что поисковые запросы без совпадений возвращают пустой список."""
     r = await api_client.get(path, params=params)
     assert r.status_code == expected_status

@@ -1,10 +1,11 @@
 from src.api.deps import PagDep
 from src.core.domain_exc import InvalidRectangleBoundsException, ObjectNotFoundException, CompanyNotFoundException
+from src.schemas.companies import CompaniesOutDTO
 from src.services.base import BaseService
 
 
 class CompaniesService(BaseService):
-    async def get_in_radius(self, *, pagination: PagDep, lon: float, lat: float, radius_m: float):
+    async def get_in_radius(self, *, pagination: PagDep, lon: float, lat: float, radius_m: float) -> list[CompaniesOutDTO]:
         return await self.db.companies.get_in_radius(
             lon=lon,
             lat=lat,
@@ -15,7 +16,7 @@ class CompaniesService(BaseService):
 
     async def get_in_rectangle(
         self, *, pagination: PagDep, min_lon: float, min_lat: float, max_lon: float, max_lat: float
-    ):
+    ) -> list[CompaniesOutDTO]:
         if min_lon > max_lon or min_lat > max_lat:
             raise InvalidRectangleBoundsException()
         return await self.db.companies.get_in_rectangle(
@@ -27,13 +28,13 @@ class CompaniesService(BaseService):
             offset=pagination.per_page * (pagination.page - 1),
         )
 
-    async def get_by_id(self, *, company_id: int):
+    async def get_by_id(self, *, company_id: int) -> CompaniesOutDTO:
         try:
             return await self.db.companies.get_one(id=company_id)
         except ObjectNotFoundException as exc:
             raise CompanyNotFoundException() from exc
 
-    async def get_by_name(self, *, pagination: PagDep, name: str):
+    async def get_by_name(self, *, pagination: PagDep, name: str) -> list[CompaniesOutDTO]:
         return await self.db.companies.get_by_name(
             name=name, limit=pagination.per_page, offset=pagination.per_page * (pagination.page - 1)
         )

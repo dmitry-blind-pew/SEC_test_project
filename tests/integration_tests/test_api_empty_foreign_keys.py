@@ -15,7 +15,7 @@ async def test_unknown_building_or_activity_returns_empty_company_list(
     path: str,
     expected_status: int,
     expected_body: list,
-):
+) -> None:
     """Проверяет, что неизвестные building/activity id дают пустой список компаний."""
     r = await api_client.get(path)
     assert r.status_code == expected_status

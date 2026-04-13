@@ -1,4 +1,5 @@
 import redis.asyncio as redis
+from typing import Any
 
 from src.core.config import settings
 
@@ -9,7 +10,7 @@ class RedisConnector:
         self.port = port
         self.redis = None
 
-    async def connect(self):
+    async def connect(self) -> None:
         self.redis = await redis.Redis(host=self.host, port=self.port)
 
     async def set(self, key: str, value: str, expire: int = None) -> None:
@@ -18,18 +19,18 @@ class RedisConnector:
         else:
             await self.redis.set(key, value)
 
-    async def get(self, key: str):
+    async def get(self, key: str) -> Any | None:
         return await self.redis.get(key)
 
-    async def delete(self, key: str):
+    async def delete(self, key: str) -> None:
         await self.redis.delete(key)
 
-    async def ping(self):
+    async def ping(self) -> bool:
         if self.redis:
             return await self.redis.ping()
         return False
 
-    async def disconnect(self):
+    async def disconnect(self) -> None:
         if self.redis:
             await self.redis.close()
 

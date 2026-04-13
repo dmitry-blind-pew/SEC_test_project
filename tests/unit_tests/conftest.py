@@ -1,4 +1,5 @@
 from unittest.mock import AsyncMock
+from typing import Any
 
 import pytest
 from src.api.deps import PaginationParams
@@ -11,7 +12,7 @@ def pagination_input() -> PaginationParams:
 
 
 @pytest.fixture
-def db_with_companies_repo():
+def db_with_companies_repo() -> Any:
     """Создает мок DBManager с моками методов репозитория компаний."""
     class CompaniesRepoMock:
         def __init__(self):

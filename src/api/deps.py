@@ -1,4 +1,5 @@
 import logging
+from collections.abc import AsyncGenerator
 from typing import Annotated
 from fastapi import Depends, Security, Query, Request
 from fastapi.security import APIKeyHeader
@@ -14,7 +15,7 @@ api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 logger = logging.getLogger(__name__)
 
-def verify_api_key(request: Request, api_key: str | None = Security(api_key_header)):
+def verify_api_key(request: Request, api_key: str | None = Security(api_key_header)) -> None:
     if api_key != settings.API_KEY:
         logger.warning(
             "Отклонен запрос с неверным API-ключом: method=%s path=%s client_ip=%s",
@@ -28,7 +29,7 @@ def verify_api_key(request: Request, api_key: str | None = Security(api_key_head
 ApiKeyDep = Annotated[str, Depends(verify_api_key)]
 
 
-async def get_db():
+async def get_db() -> AsyncGenerator[DBManager, None]:
     async with DBManager(session_factory=async_session_maker) as db:
         yield db
 

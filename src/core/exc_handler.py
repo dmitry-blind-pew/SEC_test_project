@@ -22,7 +22,7 @@ def resolve_status_code(exc: SecTestException) -> int:
 
 logger = logging.getLogger(__name__)
 
-async def sectest_exception_handler(request: Request, exc: SecTestException):
+async def sectest_exception_handler(request: Request, exc: SecTestException) -> JSONResponse:
     status_code = resolve_status_code(exc)
     log_fn = logger.warning if status_code < 500 else logger.error
     log_fn(

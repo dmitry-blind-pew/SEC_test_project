@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+from collections.abc import AsyncIterator
 
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -19,7 +20,7 @@ from src.core.redis_connector import redis_connector
 logger = logging.getLogger(__name__)
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("Запуск приложения: начинаем инициализацию...")
     try:
         await redis_connector.connect()

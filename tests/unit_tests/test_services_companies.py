@@ -1,4 +1,5 @@
 from unittest.mock import AsyncMock
+from typing import Any
 
 import pytest
 
@@ -11,7 +12,9 @@ from src.services.companies import CompaniesService
 
 
 @pytest.mark.asyncio
-async def test_get_in_rectangle_raises_invalid_bounds(db_with_companies_repo, pagination_input):
+async def test_get_in_rectangle_raises_invalid_bounds(
+    db_with_companies_repo: Any, pagination_input: Any
+) -> None:
     """Проверяет, что сервис отклоняет прямоугольник с min > max."""
     service = CompaniesService(db=db_with_companies_repo)
 
@@ -26,7 +29,9 @@ async def test_get_in_rectangle_raises_invalid_bounds(db_with_companies_repo, pa
 
 
 @pytest.mark.asyncio
-async def test_get_in_rectangle_calls_repo_with_limit_offset(db_with_companies_repo, pagination_input):
+async def test_get_in_rectangle_calls_repo_with_limit_offset(
+    db_with_companies_repo: Any, pagination_input: Any
+) -> None:
     """Проверяет корректный прокид limit/offset в repo.get_in_rectangle."""
     expected_payload = ["ok"]
     db_with_companies_repo.companies.get_in_rectangle = AsyncMock(return_value=expected_payload)
@@ -52,7 +57,7 @@ async def test_get_in_rectangle_calls_repo_with_limit_offset(db_with_companies_r
 
 
 @pytest.mark.asyncio
-async def test_get_by_id_maps_not_found_exception(db_with_companies_repo):
+async def test_get_by_id_maps_not_found_exception(db_with_companies_repo: Any) -> None:
     """Проверяет маппинг ObjectNotFoundException в CompanyNotFoundException."""
     db_with_companies_repo.companies.get_one = AsyncMock(side_effect=ObjectNotFoundException())
     service = CompaniesService(db=db_with_companies_repo)
@@ -62,7 +67,9 @@ async def test_get_by_id_maps_not_found_exception(db_with_companies_repo):
 
 
 @pytest.mark.asyncio
-async def test_get_in_radius_calls_repo_with_pagination(db_with_companies_repo, pagination_input):
+async def test_get_in_radius_calls_repo_with_pagination(
+    db_with_companies_repo: Any, pagination_input: Any
+) -> None:
     """Проверяет корректное "прокидывание" пагинации в get_in_radius."""
     service = CompaniesService(db=db_with_companies_repo)
 
@@ -83,7 +90,9 @@ async def test_get_in_radius_calls_repo_with_pagination(db_with_companies_repo, 
 
 
 @pytest.mark.asyncio
-async def test_get_by_name_calls_repo_with_pagination(db_with_companies_repo, pagination_input):
+async def test_get_by_name_calls_repo_with_pagination(
+    db_with_companies_repo: Any, pagination_input: Any
+) -> None:
     """Проверяет корректное "прокидывание" пагинации в get_by_name."""
     service = CompaniesService(db=db_with_companies_repo)
 

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Query
 from fastapi_cache.decorator import cache
 
 from src.api.deps import DBDep, PagDep
+from src.schemas.companies import CompaniesOutDTO
 from src.services.companies import CompaniesService
 
 
@@ -17,7 +18,7 @@ async def get_in_radius(
     lat: float = Query(ge=-90, le=90),
     radius_m: float = Query(gt=0),
     db: DBDep,
-):
+) -> list[CompaniesOutDTO]:
     return await CompaniesService(db).get_in_radius(pagination=pagination, lon=lon, lat=lat, radius_m=radius_m)
 
 
@@ -31,7 +32,7 @@ async def get_in_rectangle(
     max_lon: float = Query(ge=-180, le=180),
     max_lat: float = Query(ge=-90, le=90),
     db: DBDep,
-):
+) -> list[CompaniesOutDTO]:
     return await CompaniesService(db).get_in_rectangle(
         pagination=pagination,
         min_lon=min_lon,
@@ -42,11 +43,11 @@ async def get_in_rectangle(
 
 
 @router.get("/{company_id}", summary="Получить компанию по ID")
-async def get_by_id(*, company_id: int, db: DBDep):
+async def get_by_id(*, company_id: int, db: DBDep) -> CompaniesOutDTO:
     return await CompaniesService(db).get_by_id(company_id=company_id)
 
 
 @router.get("", summary="Получить компании по названию")
 @cache(expire=90)
-async def get_by_name(*, pagination: PagDep, name: str, db: DBDep):
+async def get_by_name(*, pagination: PagDep, name: str, db: DBDep) -> list[CompaniesOutDTO]:
     return await CompaniesService(db).get_by_name(name=name, pagination=pagination)

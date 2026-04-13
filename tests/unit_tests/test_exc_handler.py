@@ -12,7 +12,7 @@ from src.core.domain_exc import (
 from src.core.exc_handler import resolve_status_code, sectest_exception_handler
 
 
-def test_resolve_status_code_maps_known_exceptions():
+def test_resolve_status_code_maps_known_exceptions() -> None:
     """Проверяет корректный мапинг доменных исключений в HTTP-статусы."""
     assert resolve_status_code(ApiKeyInvalidException()) == 403
     assert resolve_status_code(ObjectNotFoundException()) == 404
@@ -21,7 +21,7 @@ def test_resolve_status_code_maps_known_exceptions():
 
 
 @pytest.mark.asyncio
-async def test_sectest_exception_handler_returns_json_response():
+async def test_sectest_exception_handler_returns_json_response() -> None:
     """Проверяет формат JSON-ответа обработчика исключений."""
     exc = CompanyNotFoundException()
 
